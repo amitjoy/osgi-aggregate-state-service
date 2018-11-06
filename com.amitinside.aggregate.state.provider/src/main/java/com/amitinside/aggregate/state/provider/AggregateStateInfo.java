@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import org.osgi.framework.ServiceReference;
 
-public final class AggregateStateTrackingInfo {
+public final class AggregateStateInfo {
 
 	ServiceReference<?> serviceReference;
 	Map<String, String> stateProperties;
@@ -24,19 +24,24 @@ public final class AggregateStateTrackingInfo {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof AggregateStateTrackingInfo)) {
+		if (!(obj instanceof AggregateStateInfo)) {
 			return false;
 		}
 		if (obj == this) {
 			return true;
 		}
-		final AggregateStateTrackingInfo object = (AggregateStateTrackingInfo) obj;
+		final AggregateStateInfo object = (AggregateStateInfo) obj;
 		return Objects.equals(serviceReference, object.serviceReference);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(serviceReference);
+	}
+
+	@Override
+	public String toString() {
+		return "[serviceReference=" + serviceReference + ", stateProperties=" + stateProperties + "]";
 	}
 
 }

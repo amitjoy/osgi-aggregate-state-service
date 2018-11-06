@@ -1,0 +1,23 @@
+-runfw: org.eclipse.osgi;version=3.13
+-runee: JavaSE-1.8
+-runprovidedcapabilities: ${native_capability}
+
+-resolve.effective: active
+
+-runproperties: \
+	osgi.console=,\
+	osgi.console.enable.builtin=false
+
+-runbundles: \
+	com.amitinside.aggregate.state.api;version=snapshot,\
+	com.amitinside.aggregate.state.provider;version=snapshot,\
+	org.apache.felix.gogo.command;version='[1.0.2,1.0.3)',\
+	org.apache.felix.gogo.runtime;version='[1.0.10,1.0.11)',\
+	org.apache.felix.gogo.shell;version='[1.0.0,1.0.1)',\
+	org.osgi.service.event;version='[1.4.0,1.4.1)'
+
+-runrequires: \
+	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
+	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
+	bnd.identity;version='latest';id='com.amitinside.aggregate.state.provider',\
+	osgi.identity;filter:='(&(osgi.identity=org.osgi.service.event)(version>=1.4.0))'

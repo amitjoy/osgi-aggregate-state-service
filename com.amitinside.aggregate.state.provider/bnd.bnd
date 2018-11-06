@@ -1,4 +1,5 @@
 -buildpath: \
 	com.amitinside.aggregate.state.api,\
-	osgi.core,\
-	osgi.cmpn
+	osgi.core;version=7.0.0,\
+	osgi.cmpn;version=7.0.0,\
+	osgi.annotation;version=7.0.0
