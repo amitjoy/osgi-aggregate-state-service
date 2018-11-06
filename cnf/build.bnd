@@ -1,3 +1,11 @@
+Bundle-Version                        =         1.0.0.${tstamp}
+
+javac.source                          =         1.8
+javac.target                          =         ${javac.source}
+javac.compliance                      =         ${javac.source}
+javac.debug                           =         on
+javac.encoding                        =         UTF-8
+
 src                                   =         src/main/java, src/main/resources
 bin                                   =         target/classes
 testsrc                               =         src/test/java

@@ -1,0 +1,4 @@
+-buildpath: \
+	com.amitinside.aggregate.state.api,\
+	osgi.core,\
+	osgi.cmpn

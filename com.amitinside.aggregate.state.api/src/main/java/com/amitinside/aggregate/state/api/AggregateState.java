@@ -25,16 +25,16 @@ import org.osgi.annotation.versioning.ProviderType;
  * code real estate. Really, spend the effort to properly handle your
  * dependencies.
  *
- * The {@link AggregateState} now actively tracks any service that has
- * the {@code aggregate.state} service property. It uses the learned information
- * to modify its own service properties.
+ * The {@link AggregateState} now actively tracks any service that has the
+ * {@code aggregate.state} service property. It uses the learned information to
+ * modify its own service properties.
  *
- * The {@link AggregateState} also registers the cardinality that it
- * detected for each state. The cardinality is the number of values that were
- * registered for a state. It will prefix the state id with a hash ({@code #})
- * and register the total number of values that it found on other services. The
- * {@code %} prefix register the total number of unique values. This makes it
- * possible to wait until there are a given number of services available.
+ * The {@link AggregateState} also registers the cardinality that it detected
+ * for each state. The cardinality is the number of values that were registered
+ * for a state. It will prefix the state id with a hash ({@code #}) and register
+ * the total number of values that it found on other services. The {@code %}
+ * prefix register the total number of unique values. This makes it possible to
+ * wait until there are a given number of services available.
  *
  * <p>
  * Access to this service requires the
@@ -51,6 +51,8 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @ProviderType
 public interface AggregateState {
+
+	String PROPERTY = "aggregate.state";
 
 	/**
 	 * Returns all (known) {@code aggregate.state}s tracked by this service
