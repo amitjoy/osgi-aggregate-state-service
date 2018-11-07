@@ -9,6 +9,7 @@
  *******************************************************************************/
 package com.amitinside.aggregate.state.provider;
 
+import static com.amitinside.aggregate.state.AggregateState.PROPERTY;
 import static org.osgi.framework.Constants.BUNDLE_ACTIVATOR;
 
 import org.osgi.annotation.bundle.Header;
@@ -16,8 +17,6 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.util.tracker.ServiceTracker;
-
-import com.amitinside.aggregate.state.AggregateState;
 
 @Header(name = BUNDLE_ACTIVATOR, value = "${@class}")
 public final class Activator implements BundleActivator {
@@ -27,7 +26,7 @@ public final class Activator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		final String ldapFilter = "(" + AggregateState.PROPERTY + "=*)";
+		final String ldapFilter = "(" + PROPERTY + "=*)";
 		final Filter filter = bundleContext.createFilter(ldapFilter);
 		customizer = new AggregateStatesTracker(bundleContext);
 		aggregateServiceTracker = new ServiceTracker<>(bundleContext, filter, customizer);
