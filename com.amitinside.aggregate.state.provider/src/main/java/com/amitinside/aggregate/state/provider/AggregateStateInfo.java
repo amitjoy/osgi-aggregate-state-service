@@ -24,7 +24,6 @@ import org.osgi.framework.ServiceReference;
  * service properties.
  *
  * <pre>
- *
  * Service A:
  *      - aggregate.state = stateA, stateB
  *      - stateA = MyState1
@@ -36,7 +35,6 @@ import org.osgi.framework.ServiceReference;
  *     - stateB = MyState2
  *
  * </pre>
- *
  */
 public final class AggregateStateInfo {
 
@@ -45,17 +43,14 @@ public final class AggregateStateInfo {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof AggregateStateInfo)) {
-			return false;
-		}
 		if (obj == this) {
 			return true;
 		}
-		final AggregateStateInfo object = (AggregateStateInfo) obj;
-		return Objects.equals(serviceReference, object.serviceReference);
+		if (obj instanceof AggregateStateInfo) {
+			final AggregateStateInfo other = (AggregateStateInfo) obj;
+			return Objects.equals(serviceReference, other.serviceReference);
+		}
+		return false;
 	}
 
 	@Override
