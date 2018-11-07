@@ -3,7 +3,7 @@
 -runprovidedcapabilities: ${native_capability}
 
 -resolve.effective: active
--rundebug: true
+-runtrace: true
 
 -runproperties: \
 	osgi.console=,\
