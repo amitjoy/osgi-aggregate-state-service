@@ -70,13 +70,17 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 		registerOrUpdateAggregateStateService();
 	}
 
+	/**
+	 * Deregisters already registered {@link AggregateState} service
+	 */
 	public void deregisterAggregateServiceRegistration() {
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
 		}
 	}
 
-	private class AggregateStateProvider implements AggregateState {
+	private enum AggregateStateProvider implements AggregateState {
+		INSTANCE;
 	}
 
 	private void addAggregateStateInfo(ServiceReference<Object> reference) {
@@ -107,7 +111,7 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 			final Object prop = reference.getProperty(state);
 			if (prop == null) {
 				final String message = String.format(
-						"Aggregate State cannot be processed since the specified state cannot be mapped to an existing property - [%s] in ServiceReference [%s]",
+						"Aggregate State cannot be processed since the specified state(s) cannot be mapped to an existing property - [%s] in ServiceReference [%s]",
 						prop, reference);
 				throw new AggregateStateException(message);
 			}
@@ -125,8 +129,8 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 		monitor.lock();
 		try {
 			if (serviceRegistration == null) {
-				serviceRegistration = bundleContext.registerService(AggregateState.class, new AggregateStateProvider(),
-						calculateProperties());
+				serviceRegistration = bundleContext.registerService(AggregateState.class,
+						AggregateStateProvider.INSTANCE, calculateProperties());
 			} else {
 				serviceRegistration.setProperties(calculateProperties());
 			}
