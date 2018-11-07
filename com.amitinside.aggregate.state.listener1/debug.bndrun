@@ -20,4 +20,5 @@
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
 	bnd.identity;version='latest';id='com.amitinside.aggregate.state.provider',\
-	osgi.identity;filter:='(&(osgi.identity=org.osgi.service.event)(version>=1.4.0))'
+	osgi.identity;filter:='(&(osgi.identity=org.osgi.service.event)(version>=1.4.0))',\
+	bnd.identity;version='latest';id='com.amitinside.aggregate.state.listener1'

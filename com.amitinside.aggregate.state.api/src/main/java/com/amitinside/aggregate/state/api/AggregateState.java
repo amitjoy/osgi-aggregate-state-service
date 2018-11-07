@@ -12,9 +12,9 @@ package com.amitinside.aggregate.state.api;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * In OSGi there is no start ordering. This means that any requirement like
- * (start) ordering must be translated to (service) dependencies. Once something
- * is a service dependency, a (DS) component can defer its activation until the
+ * In OSGi there is no start ordering. This means, any requirement like (start)
+ * ordering must be translated to (service) dependencies. Once something is a
+ * service dependency, a (DS) component can defer its activation until the
  * dependency is there. Since this is a proper dependency, an deregistration
  * will automatically deactivate any components that depend on this service.
  * Once something is mapped to a service it leverages the DS runtime to handle
@@ -27,9 +27,12 @@ import org.osgi.annotation.versioning.ProviderType;
  * The {@link AggregateState} also registers the cardinality that it detected
  * for each state. The cardinality is the number of values that were registered
  * for a state. It will prefix the state id with a hash ({@code #}) and register
- * the total number of values that it found on other services. The {@code %}
- * prefix register the total number of unique values. This makes it possible to
- * wait until there are a given number of services available.
+ * the total number of values that it found in other services. The {@code %}
+ * prefix registers the total number of unique values.
+ *
+ * <b>Note that</b>, the implementation can also throw
+ * {@link AggregateStateException} if the service specified state(s) cannot be
+ * mapped to any existing property.
  *
  * <p>
  * Access to this service requires the

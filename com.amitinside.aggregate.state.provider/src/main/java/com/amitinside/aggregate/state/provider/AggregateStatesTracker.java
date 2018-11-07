@@ -28,15 +28,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import com.amitinside.aggregate.state.api.AggregateState;
 
-@Component(name = "AggregateStatesTracker", immediate = true)
-public final class AggregateStatesTracker {
+public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Object, Object> {
 
 	private static final String UNIQUE_STATES_KEY_PREFIX = "%";
 	private static final String NON_UNIQUE_STATES_KEY_PREFIX = "#";
@@ -46,7 +42,6 @@ public final class AggregateStatesTracker {
 	private final List<AggregateStateInfo> aggregateStateInfos;
 	private final AtomicReference<ServiceRegistration<AggregateState>> aggregateStateServiceReg;
 
-	@Activate
 	public AggregateStatesTracker(BundleContext bundleContext) {
 		requireNonNull(bundleContext, "BundleContext cannot be null");
 		this.bundleContext = bundleContext;
@@ -55,25 +50,27 @@ public final class AggregateStatesTracker {
 		aggregateStateServiceReg = new AtomicReference<>(null);
 	}
 
-	@Reference(target = "(" + PROPERTY + "=*)")
-	protected void bindListener(Object service, ServiceReference<Object> reference) {
+	@Override
+	public Object addingService(ServiceReference<Object> reference) {
 		addAggregateStateInfo(reference);
 		registerOrUpdateAggregateStateService();
+		return bundleContext.getService(reference);
 	}
 
-	protected void unbindListener(Object service, ServiceReference<Object> reference) {
-		removeAggregateStateInfo(reference);
-		registerOrUpdateAggregateStateService();
-	}
-
-	protected void updatedListener(Object service, ServiceReference<Object> reference) {
+	@Override
+	public void modifiedService(ServiceReference<Object> reference, Object service) {
 		removeAggregateStateInfo(reference);
 		addAggregateStateInfo(reference);
 		registerOrUpdateAggregateStateService();
 	}
 
-	@Deactivate
-	protected void deactivate() {
+	@Override
+	public void removedService(ServiceReference<Object> reference, Object service) {
+		removeAggregateStateInfo(reference);
+		registerOrUpdateAggregateStateService();
+	}
+
+	public void deregisterAggregateServiceRegistration() {
 		final ServiceRegistration<AggregateState> serviceRegistration = aggregateStateServiceReg.get();
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
@@ -110,9 +107,10 @@ public final class AggregateStatesTracker {
 		states.forEach(s -> {
 			final Object prop = reference.getProperty(s);
 			if (prop == null) {
-				throw new RuntimeException(String.format(
-						"Aggregate State cannot be processed since the specified state cannot be mapped to an existing property - %s",
-						s));
+				final String message = String.format(
+						"Aggregate State cannot be processed since the specified state cannot be mapped to an existing property - [%s] in ServiceReference [%s]",
+						prop, reference);
+				throw new AggregateStateException(message);
 			}
 			properties.put(s, String.valueOf(prop));
 		});
