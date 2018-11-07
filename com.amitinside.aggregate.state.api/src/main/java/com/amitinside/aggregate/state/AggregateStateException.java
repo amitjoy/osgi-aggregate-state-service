@@ -9,6 +9,10 @@
  *******************************************************************************/
 package com.amitinside.aggregate.state;
 
+/**
+ * Thrown when aggregate state cannot be processed if the service specified
+ * state(s) cannot be mapped to any existing property.
+ */
 public final class AggregateStateException extends RuntimeException {
 
 	private static final long serialVersionUID = -3487103127847862920L;
@@ -24,9 +28,9 @@ public final class AggregateStateException extends RuntimeException {
 	 * Constructs a {@code AggregateStateException} with the specified detailed
 	 * message.
 	 *
-	 * @param s the detail message.
+	 * @param message the detailed message.
 	 */
-	public AggregateStateException(String s) {
-		super(s);
+	public AggregateStateException(String message) {
+		super(message);
 	}
 }

@@ -31,6 +31,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import com.amitinside.aggregate.state.AggregateState;
+import com.amitinside.aggregate.state.AggregateStateException;
 
 public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Object, Object> {
 

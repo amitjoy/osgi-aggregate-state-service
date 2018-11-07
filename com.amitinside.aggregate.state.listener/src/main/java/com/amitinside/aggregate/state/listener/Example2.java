@@ -1,4 +1,4 @@
-package com.amitinside.aggregate.state.listener1;
+package com.amitinside.aggregate.state.listener;
 
 import org.osgi.service.component.annotations.Component;
 
