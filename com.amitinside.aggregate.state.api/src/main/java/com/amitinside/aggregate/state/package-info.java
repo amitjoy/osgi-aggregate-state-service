@@ -9,4 +9,4 @@
  *******************************************************************************/
 @org.osgi.annotation.versioning.Version("1.0.0")
 @org.osgi.annotation.bundle.Export
-package com.amitinside.aggregate.state.api;
+package com.amitinside.aggregate.state;

@@ -3,6 +3,7 @@
 -runprovidedcapabilities: ${native_capability}
 
 -resolve.effective: active
+-rundebug: true
 
 -runproperties: \
 	osgi.console=,\
@@ -14,11 +15,17 @@
 	org.apache.felix.gogo.command;version='[1.0.2,1.0.3)',\
 	org.apache.felix.gogo.runtime;version='[1.0.10,1.0.11)',\
 	org.apache.felix.gogo.shell;version='[1.0.0,1.0.1)',\
-	org.osgi.service.event;version='[1.4.0,1.4.1)'
+	org.osgi.service.event;version='[1.4.0,1.4.1)',\
+	com.amitinside.aggregate.state.listener1;version=latest,\
+	org.apache.felix.scr
 
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)',\
 	osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
 	bnd.identity;version='latest';id='com.amitinside.aggregate.state.provider',\
 	osgi.identity;filter:='(&(osgi.identity=org.osgi.service.event)(version>=1.4.0))',\
-	bnd.identity;version='latest';id='com.amitinside.aggregate.state.listener1'
+	bnd.identity;version='latest';id='com.amitinside.aggregate.state.listener1',\
+	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.configadmin)(version>=1.9.8))',\
+	osgi.identity;filter:='(&(osgi.identity=org.apache.felix.gogo.runtime)(version>=1.0.0))',\
+	osgi.identity;filter:='(&(osgi.identity=org.osgi.service.metatype)(version>=1.4.0))',\
+	osgi.identity;filter:='(&(osgi.identity=osgi.cmpn)(version>=7.0.0))'

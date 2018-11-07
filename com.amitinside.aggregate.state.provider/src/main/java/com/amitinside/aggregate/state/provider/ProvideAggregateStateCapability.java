@@ -9,7 +9,7 @@
  *******************************************************************************/
 package com.amitinside.aggregate.state.provider;
 
-import static com.amitinside.aggregate.state.api.AggregateState.AGGREGATE_STATE_CAPABILITY_NAME;
+import static com.amitinside.aggregate.state.AggregateState.AGGREGATE_STATE_CAPABILITY_NAME;
 import static org.osgi.namespace.extender.ExtenderNamespace.EXTENDER_NAMESPACE;
 
 import java.lang.annotation.Retention;

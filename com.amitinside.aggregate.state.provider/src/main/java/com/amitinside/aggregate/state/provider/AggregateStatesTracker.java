@@ -9,7 +9,7 @@
  *******************************************************************************/
 package com.amitinside.aggregate.state.provider;
 
-import static com.amitinside.aggregate.state.api.AggregateState.PROPERTY;
+import static com.amitinside.aggregate.state.AggregateState.PROPERTY;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -30,7 +30,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
-import com.amitinside.aggregate.state.api.AggregateState;
+import com.amitinside.aggregate.state.AggregateState;
 
 public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Object, Object> {
 
@@ -40,14 +40,13 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 	private final Lock monitor;
 	private final BundleContext bundleContext;
 	private final List<AggregateStateInfo> aggregateStateInfos;
-	private final AtomicReference<ServiceRegistration<AggregateState>> aggregateStateServiceReg;
+	private volatile ServiceRegistration<AggregateState> serviceRegistration;
 
 	public AggregateStatesTracker(BundleContext bundleContext) {
 		requireNonNull(bundleContext, "BundleContext cannot be null");
 		this.bundleContext = bundleContext;
 		monitor = new ReentrantLock();
 		aggregateStateInfos = new CopyOnWriteArrayList<>();
-		aggregateStateServiceReg = new AtomicReference<>(null);
 	}
 
 	@Override
@@ -71,7 +70,6 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 	}
 
 	public void deregisterAggregateServiceRegistration() {
-		final ServiceRegistration<AggregateState> serviceRegistration = aggregateStateServiceReg.get();
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
 		}
@@ -104,16 +102,16 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 			states = Collections.emptyList();
 		}
 
-		states.forEach(s -> {
-			final Object prop = reference.getProperty(s);
+		for (final String state : states) {
+			final Object prop = reference.getProperty(state);
 			if (prop == null) {
 				final String message = String.format(
 						"Aggregate State cannot be processed since the specified state cannot be mapped to an existing property - [%s] in ServiceReference [%s]",
 						prop, reference);
 				throw new AggregateStateException(message);
 			}
-			properties.put(s, String.valueOf(prop));
-		});
+			properties.put(state, String.valueOf(prop));
+		}
 
 		final AggregateStateInfo info = new AggregateStateInfo();
 		info.stateProperties = properties;
@@ -123,38 +121,43 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 	}
 
 	private void registerOrUpdateAggregateStateService() {
-		if (!aggregateStateServiceReg.compareAndSet(null, bundleContext.registerService(AggregateState.class,
-				new AggregateStateProvider(), calculateProperties()))) {
-			final ServiceRegistration<AggregateState> registration = aggregateStateServiceReg.get();
-			registration.setProperties(calculateProperties());
+		monitor.lock();
+		try {
+			if (serviceRegistration == null) {
+				serviceRegistration = bundleContext.registerService(AggregateState.class, new AggregateStateProvider(),
+						calculateProperties());
+			} else {
+				serviceRegistration.setProperties(calculateProperties());
+			}
+		} finally {
+			monitor.unlock();
 		}
 	}
 
 	private Dictionary<String, ?> calculateProperties() {
-		monitor.lock();
-		try {
-			final Map<String, Object> properties = new HashMap<>();
-			aggregateStateInfos.stream().forEach(t -> {
-				final Map<String, String> map = t.stateProperties;
-				map.forEach((k, v) -> {
-					if (properties.containsKey(k)) {
-						append((String[]) properties.get(k), v);
-					} else {
-						properties.put(k, new String[] { v });
-					}
-					final String[] value = (String[]) properties.get(k);
+		final Map<String, Object> properties = new HashMap<>();
+		for (final AggregateStateInfo stateInfo : aggregateStateInfos) {
+			final Map<String, String> stateProperties = stateInfo.stateProperties;
+			for (final Entry<String, String> entry : stateProperties.entrySet()) {
+				final String key = entry.getKey();
+				final String value = entry.getValue();
 
-					final String totalNoOfStatesPropertyKey = NON_UNIQUE_STATES_KEY_PREFIX + k;
-					final String totalNoOfUniqueStatesPropertyKey = UNIQUE_STATES_KEY_PREFIX + k;
+				if (properties.containsKey(key)) {
+					final String[] newValue = append((String[]) properties.get(key), value);
+					properties.put(key, newValue);
+				} else {
+					properties.put(key, new String[] { value });
+				}
+				final String[] keyValue = (String[]) properties.get(key);
 
-					properties.put(totalNoOfStatesPropertyKey, value.length);
-					properties.put(totalNoOfUniqueStatesPropertyKey, Arrays.stream(value).collect(toSet()).size());
-				});
-			});
-			return new Hashtable<>(properties);
-		} finally {
-			monitor.unlock();
+				final String totalNoOfStatesPropertyKey = NON_UNIQUE_STATES_KEY_PREFIX + key;
+				final String totalNoOfUniqueStatesPropertyKey = UNIQUE_STATES_KEY_PREFIX + key;
+
+				properties.put(totalNoOfStatesPropertyKey, keyValue.length);
+				properties.put(totalNoOfUniqueStatesPropertyKey, Arrays.stream(keyValue).collect(toSet()).size());
+			}
 		}
+		return new Hashtable<>(properties);
 	}
 
 	private static <T> T[] append(T[] arr, T element) {

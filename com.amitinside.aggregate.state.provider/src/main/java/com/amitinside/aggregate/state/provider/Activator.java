@@ -17,7 +17,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.util.tracker.ServiceTracker;
 
-import com.amitinside.aggregate.state.api.AggregateState;
+import com.amitinside.aggregate.state.AggregateState;
 
 @Header(name = BUNDLE_ACTIVATOR, value = "${@class}")
 public final class Activator implements BundleActivator {

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-2.0
  *
  *******************************************************************************/
-package com.amitinside.aggregate.state.api;
+package com.amitinside.aggregate.state;
 
 public final class AggregateStateException extends RuntimeException {
 
