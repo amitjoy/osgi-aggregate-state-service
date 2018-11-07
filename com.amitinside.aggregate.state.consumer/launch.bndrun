@@ -17,7 +17,6 @@
 	org.apache.felix.gogo.shell;version='[1.0.0,1.0.1)',\
 	org.osgi.service.event;version='[1.4.0,1.4.1)',\
 	com.amitinside.aggregate.state.consumer,\
-	com.amitinside.aggregate.state.listener,\
 	org.apache.felix.scr
 
 -runrequires: \

@@ -20,7 +20,7 @@ import org.osgi.framework.ServiceReference;
  * provides. This also provides the associated properties of the aggregate
  * states.
  *
- * Example, consider a service providing the following aggregate states as its
+ * Example, consider a service providing the following aggregate states in its
  * service properties.
  *
  * <pre>
@@ -33,7 +33,6 @@ import org.osgi.framework.ServiceReference;
  *     - [KEY]  = [VALUE]
  *     - stateA = MyState1
  *     - stateB = MyState2
- *
  * </pre>
  */
 public final class AggregateStateInfo {
@@ -42,7 +41,7 @@ public final class AggregateStateInfo {
 	Map<String, String> stateProperties;
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == this) {
 			return true;
 		}

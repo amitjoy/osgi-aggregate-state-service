@@ -25,7 +25,7 @@ public final class Activator implements BundleActivator {
 	private AggregateStatesTracker customizer;
 
 	@Override
-	public void start(BundleContext bundleContext) throws Exception {
+	public void start(final BundleContext bundleContext) throws Exception {
 		final String ldapFilter = "(" + PROPERTY + "=*)";
 		final Filter filter = bundleContext.createFilter(ldapFilter);
 		customizer = new AggregateStatesTracker(bundleContext);
@@ -34,7 +34,7 @@ public final class Activator implements BundleActivator {
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		if (aggregateServiceTracker != null) {
 			customizer.deregisterAggregateServiceRegistration();
 			aggregateServiceTracker.close();

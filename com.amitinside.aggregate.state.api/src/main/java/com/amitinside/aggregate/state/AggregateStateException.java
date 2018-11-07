@@ -9,11 +9,14 @@
  *******************************************************************************/
 package com.amitinside.aggregate.state;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * Thrown when aggregate state cannot be processed if the service specified
- * state(s) cannot be mapped to any existing property.
+ * state(s) cannot be mapped to any existing property
  */
-public final class AggregateStateException extends RuntimeException {
+@ProviderType
+public class AggregateStateException extends RuntimeException {
 
 	private static final long serialVersionUID = -3487103127847862920L;
 
@@ -30,7 +33,7 @@ public final class AggregateStateException extends RuntimeException {
 	 *
 	 * @param message the detailed message.
 	 */
-	public AggregateStateException(String message) {
+	public AggregateStateException(final String message) {
 		super(message);
 	}
 }

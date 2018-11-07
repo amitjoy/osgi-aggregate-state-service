@@ -43,7 +43,7 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 	private final List<AggregateStateInfo> aggregateStateInfos;
 	private volatile ServiceRegistration<AggregateState> serviceRegistration;
 
-	public AggregateStatesTracker(BundleContext bundleContext) {
+	public AggregateStatesTracker(final BundleContext bundleContext) {
 		requireNonNull(bundleContext, "BundleContext cannot be null");
 		this.bundleContext = bundleContext;
 		monitor = new ReentrantLock();
@@ -51,21 +51,21 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 	}
 
 	@Override
-	public Object addingService(ServiceReference<Object> reference) {
+	public Object addingService(final ServiceReference<Object> reference) {
 		addAggregateStateInfo(reference);
 		registerOrUpdateAggregateStateService();
 		return bundleContext.getService(reference);
 	}
 
 	@Override
-	public void modifiedService(ServiceReference<Object> reference, Object service) {
+	public void modifiedService(final ServiceReference<Object> reference, final Object service) {
 		removeAggregateStateInfo(reference);
 		addAggregateStateInfo(reference);
 		registerOrUpdateAggregateStateService();
 	}
 
 	@Override
-	public void removedService(ServiceReference<Object> reference, Object service) {
+	public void removedService(final ServiceReference<Object> reference, final Object service) {
 		removeAggregateStateInfo(reference);
 		registerOrUpdateAggregateStateService();
 	}
@@ -76,6 +76,7 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 	public void deregisterAggregateServiceRegistration() {
 		if (serviceRegistration != null) {
 			serviceRegistration.unregister();
+			serviceRegistration = null;
 		}
 	}
 
@@ -83,17 +84,17 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 		INSTANCE;
 	}
 
-	private void addAggregateStateInfo(ServiceReference<Object> reference) {
+	private void addAggregateStateInfo(final ServiceReference<Object> reference) {
 		final AggregateStateInfo stateTrackingInfo = getAggregateStateInfo(reference);
 		aggregateStateInfos.add(stateTrackingInfo);
 	}
 
-	private void removeAggregateStateInfo(ServiceReference<Object> reference) {
+	private void removeAggregateStateInfo(final ServiceReference<Object> reference) {
 		final AggregateStateInfo stateTrackingInfo = getAggregateStateInfo(reference);
 		aggregateStateInfos.remove(stateTrackingInfo);
 	}
 
-	private AggregateStateInfo getAggregateStateInfo(ServiceReference<Object> reference) {
+	private AggregateStateInfo getAggregateStateInfo(final ServiceReference<Object> reference) {
 		final Object property = reference.getProperty(PROPERTY);
 		final Map<String, String> properties = new HashMap<>();
 
@@ -165,7 +166,7 @@ public final class AggregateStatesTracker implements ServiceTrackerCustomizer<Ob
 		return new Hashtable<>(properties);
 	}
 
-	private static <T> T[] append(T[] arr, T element) {
+	private static <T> T[] append(T[] arr, final T element) {
 		final int N = arr.length;
 		arr = Arrays.copyOf(arr, N + 1);
 		arr[N] = element;

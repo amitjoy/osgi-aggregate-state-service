@@ -9,7 +9,7 @@
  *******************************************************************************/
 package com.amitinside.aggregate.state.provider;
 
-import static com.amitinside.aggregate.state.AggregateState.AGGREGATE_STATE_CAPABILITY_NAME;
+import static com.amitinside.aggregate.state.AggregateState.CAPABILITY_NAME;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 import static org.osgi.namespace.extender.ExtenderNamespace.EXTENDER_NAMESPACE;
 
@@ -17,7 +17,7 @@ import java.lang.annotation.Retention;
 
 import org.osgi.annotation.bundle.Capability;
 
-@Capability(namespace = EXTENDER_NAMESPACE, name = AGGREGATE_STATE_CAPABILITY_NAME, version = "1.0")
+@Capability(namespace = EXTENDER_NAMESPACE, name = CAPABILITY_NAME, version = "1.0")
 @Retention(CLASS)
 public @interface ProvideAggregateStateCapability {
 }
