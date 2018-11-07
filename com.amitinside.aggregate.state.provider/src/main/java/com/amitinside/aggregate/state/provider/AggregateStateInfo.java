@@ -26,7 +26,7 @@ import org.osgi.framework.ServiceReference;
  * <pre>
  *
  * Service A:
- * 		- aggregate.state = stateA, stateB
+ *      - aggregate.state = stateA, stateB
  *      - stateA = MyState1
  *      - stateB = MyState2
  *
