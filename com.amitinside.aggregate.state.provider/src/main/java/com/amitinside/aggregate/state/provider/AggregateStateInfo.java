@@ -14,6 +14,30 @@ import java.util.Objects;
 
 import org.osgi.framework.ServiceReference;
 
+/**
+ * {@link AggregateStateInfo} is used to store the information regarding the
+ * aggregate states that the service identified by {@link #serviceReference}
+ * provides. This also provides the associated properties of the aggregate
+ * states.
+ *
+ * Example, consider a service providing the following aggregate states as its
+ * service properties.
+ *
+ * <pre>
+ *
+ * Service A:
+ * 		- aggregate.state = stateA, stateB
+ *      - stateA = MyState1
+ *      - stateB = MyState2
+ *
+ * The {@link #stateProperties} will then comprise:
+ *     - [KEY]  = [VALUE]
+ *     - stateA = MyState1
+ *     - stateB = MyState2
+ *
+ * </pre>
+ *
+ */
 public final class AggregateStateInfo {
 
 	ServiceReference<?> serviceReference;
