@@ -26,7 +26,7 @@ This project comprises four bundles -
 3. `com.amitinside.aggregate.state.listener` - Example Project with services taking part in Aggregate State Service mechanism
 4. `com.amitinside.aggregate.state.consumer` - Example Consumer Project showing how to use Aggregate State Service in clients
 
------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
 
 
