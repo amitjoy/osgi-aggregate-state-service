@@ -8,14 +8,14 @@
 
 For more information, have a look at [http://aqute.biz/2017/04/24/aggregate-state.html](http://aqute.biz/2017/04/24/aggregate-state.html)
 
-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
 ### Requirements
 
 1. Java 8+
 2. OSGi R6+
 
--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
 
 ### Dependencies
 
@@ -26,7 +26,7 @@ This project comprises four bundles -
 3. `com.amitinside.aggregate.state.listener` - Example Project with services taking part in Aggregate State Service mechanism
 4. `com.amitinside.aggregate.state.consumer` - Example Consumer Project showing how to use Aggregate State Service in clients
 
--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
 
 
 
