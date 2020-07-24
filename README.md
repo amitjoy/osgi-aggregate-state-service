@@ -1,6 +1,6 @@
 # OSGi Aggregate State Service
 
- In OSGi, there is no start ordering. This means, any requirement like (start) ordering must be translated to (service) dependencies. Once something is a service dependency, a (DS) component can defer its activation until the dependency is there. Since this is a proper dependency, an deregistration will automatically deactivate any components that depend on this service. Once something is mapped to a service it leverages the DS runtime to handle the highly complex ordering issues between different components.
+ In OSGi, there is no start ordering. That is, any requirement like (start) ordering must be translated to (service) dependencies. Once something is a service dependency, a (DS) component can defer its activation until the dependency is there. Since this is a proper dependency, an deregistration will automatically deactivate any components that depend on this service. Once something is mapped to a service it leverages the DS runtime to handle the highly complex ordering issues between different components.
  
  The **AggregateState** now actively tracks any service that has the **aggregate.state** service property. It uses the learned information to modify its own service properties.
  
