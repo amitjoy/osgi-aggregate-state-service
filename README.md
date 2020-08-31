@@ -6,7 +6,7 @@
  
  The **AggregateState** also registers the cardinality that it detected for each state. The cardinality is the number of values that were registered for a state. It will prefix the state id with a hash (**#**) and register the total number of values that it found in other services. The **%** prefix registers the total number of unique values.
 
-For more information, have a look at [http://aqute.biz/2017/04/24/aggregate-state.html](http://aqute.biz/2017/04/24/aggregate-state.html)
+For further information, have a look at [http://aqute.biz/2017/04/24/aggregate-state.html](http://aqute.biz/2017/04/24/aggregate-state.html)
 
 -------------------------------------------------------------------------------------------------------------------
 
